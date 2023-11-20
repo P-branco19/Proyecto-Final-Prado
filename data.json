@@ -1,0 +1,34 @@
+{
+    "productos": [
+        {
+            "producto": "Buzo adidas",
+            "precio": 50000,
+            "imagen": "./assets/img/buzo-adidas.jpg"
+        },
+        {
+            "producto": "Pantalon adidas",
+            "precio": 30000,
+            "imagen": "./assets/img/pantalon-adidas.jpg"
+        },
+        {
+            "producto": "Zapatillas adidas",
+            "precio": 70000,
+            "imagen": "./assets/img/zapatillas-adidas.jpg"
+        },
+        {
+            "producto": "Buzo nike",
+            "precio": 50000,
+            "imagen": "./assets/img/buzo-nike.jpg"
+        },
+        {
+            "producto": "Pantalon nike",
+            "precio": 30000,
+            "imagen": "./assets/img/pantalon-nike.jpg"
+        },
+        {
+            "producto": "Zapatillas Jordan",
+            "precio": 120000,
+            "imagen": "./assets/img/zapatillas-jordan.jpg"
+        }
+    ]
+}
