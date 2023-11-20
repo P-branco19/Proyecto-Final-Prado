@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F1E3F3;
+}
+
+h1 {
+    color: #C2BBF0;
+}
+
+.input-group-text {
+    background-color: #C2BBF0;
+    border-color: #8FB8ED;
+    color: black;
+}
+
+input {
+    background-color: #C2BBF0;
+    border-color: #8FB8ED;
+    color: #E9FAE3;
+}
+
+#enviar {
+    background-color: #C2BBF0;
+    border-color: #8FB8ED;
+}
+
+#enviar:hover {
+    background-color: #4DABC7;
+    border-color: #3590F3;
+    color: #E9FAE3;
+}
+
+#bienvenida {
+    color: #C2BBF0;
+}
+
+#catalogo {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn {
+    align-self: flex-end;
+    background-color: #F1E3F3;
+    color: black;
+    border-color: #D68EFA;
+}
+
+.btn:hover {
+    background-color: #D68EFA;
+    color: #F1E3F3;
+}
+
+.card {
+    background-color: #C2BBF0;
+}
