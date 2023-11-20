@@ -1,117 +1,11 @@
-// //Restaurar los datos del usuario desde el localstorage
-// document.addEventListener("DOMContentLoaded", function () {
-//     const nombreGuardado = localStorage.getItem("nombre")
-//     const apellidoGuardado = localStorage.getItem("apellido")
 
-//     if (nombreGuardado && apellidoGuardado) {
-//         const parrafo = document.createElement("p")
-//         parrafo.textContent = `Bienvenido ${nombreGuardado} ${apellidoGuardado}`
-//         bienvenida.appendChild(parrafo)
-//     }
-// })
+let totalCarrito
 
-
-// //Bienvenida del usuario:
-// const formulario = document.getElementById("formulario");
-// const bienvenida = document.getElementById("bienvenida");
-
-// document.getElementById("enviar").addEventListener("click", function () {
-//     //tomo los valores del formulario
-//     const nombre = document.getElementById("nombre").value
-//     const apellido = document.getElementById("apellido").value
-
-//     //almaceno los datos en el localstorage
-//     localStorage.setItem("nombre", nombre)
-//     localStorage.setItem("apellido", apellido)
-
-//     //creo un parrafo para mostrar los datos
-//     const parrafo = document.createElement("p")
-//     parrafo.textContent = `Bienvenido ${nombre} ${apellido}`
-
-//     //agrego el parrafo al div de bienvenida
-//     bienvenida.appendChild(parrafo)
-
-//     //reset del formulario
-//     formulario.reset()
-// })
-
-// //Restaurar el carrito desde el localstorage
-// document.addEventListener("DOMContentLoaded", function () {
-//     const carritoGuardado = JSON.parse(localStorage.getItem("carrito") || [])
-//     const totalGuardado = parseFloat(localStorage.getItem("total") || 0)
-
-//     // Limpiar el contenido existente del carrito antes de agregar los nuevos elementos
-//     carrito.innerHTML = ""
-
-//     carritoGuardado = forEach(function (producto) {
-//         const itemCarrito = document.createElement("li")
-//         itemCarrito.textContent = producto
-//         carrito.appendChild(itemCarrito)
-//     })
-
-//     total = totalGuardado
-//     totalCarrito.textContent = `Total: $${total}`
-// })
-
-
-// //Agregar productos al carrito:
-// const botonesAgregar = document.getElementsByClassName("agregarCarrito")
-// const carrito = document.getElementById("listaCarrito")
-// const totalCarrito = document.getElementById("total")
-// const vaciarCarrito = document.getElementById("vaciarCarrito")
-
-// let total = 0
-
-// for (let i = 0; i < botonesAgregar.length; i++) {
-//     botonesAgregar[i].addEventListener("click", function () {
-//         const tarjeta = this.parentElement
-//         const nombre = tarjeta.getElementsByClassName("card-title")[0].textContent
-//         const precioTexto = tarjeta.getElementsByClassName("card-subtitle")[0].textContent
-
-//         //Extrae el precio numerico del texto
-//         const precio = parseFloat(precioTexto.replace("$", ""))
-
-//         //Actualiza el total
-//         total += precio
-
-//         //Crea un elemento de lista con nombre y precio:
-//         const itemCarrito = document.createElement("li")
-//         itemCarrito.textContent = `${nombre} - ${precioTexto}`
-
-//         //Agrega el elemento al carrito
-//         carrito.appendChild(itemCarrito)
-
-//         //Actualiza el precio total
-//         totalCarrito.textContent = `Total: $${total}`
-
-//         //Guardar carrito en el localstorage
-//         guardarCarrito()
-//     })
-// }
-
-// //Evento para vaciar el carrito
-// vaciarCarrito.addEventListener("click", function () {
-//     //Vaciar la lista del carrito
-//     carrito.innerHTML = ""
-//     //Restablece el total a 0
-//     total = 0
-//     //Actualiza la visualizacion del total
-//     totalCarrito.textContent = "Total: $0"
-//     //Vaciar el carrito en el localstorage
-//     guardarCarrito()
-// })
-
-// //Funcion para guardar el carrito en el localstorage
-// function guardarCarrito() {
-//     const carritoItems = Array.from(carrito.getElementsByTagName("li"))
-//     const carritoArray = carritoItems.map(function (item) {
-//         return item.textContent
-//     })
-
-//     localStorage.setItem("carrito", JSON.stringify(carritoArray))
-//     localStorage.setItem("total", total)
-// }
-
+document.addEventListener("DOMContentLoaded", function () {
+    const catalogo = document.getElementById("catalogo")
+    const carrito = document.getElementById("carrito")
+    totalCarrito = document.getElementById("total")
+})
 
 const catalogo = document.querySelector("#catalogo")
 
@@ -142,9 +36,19 @@ fetch("./data.json")
             precio.className = "card-text"
             precio.textContent = `$${producto.precio}`
 
+            const agregarCarrito = document.createElement("button")
+            agregarCarrito.className = "btn btn-primary"
+            agregarCarrito.textContent = "Agregar al carrito"
+
+            //Agrego evento al boton para la logica del carrito
+            agregarCarrito.addEventListener("click", function () {
+                agregarAlCarrito(producto)
+            })
+
             //Agregar elementos a la card
             cardBody.appendChild(titulo)
             cardBody.appendChild(precio)
+            cardBody.appendChild(agregarCarrito)
 
             card.appendChild(imagen)
             card.appendChild(cardBody)
@@ -154,3 +58,114 @@ fetch("./data.json")
         })
     })
     .catch(error => console.error("Error al obtener los datos del JSON", error))
+
+//Funcion para agregar un producto al carrito
+function agregarAlCarrito(producto) {
+    const itemCarrito = document.createElement("li")
+    itemCarrito.textContent = `${producto.producto} - $${producto.precio}`
+
+    //Agregar el elemento al carrito
+    document.getElementById("listaCarrito").appendChild(itemCarrito)
+
+    //Actualizar el total del carrito
+    const total = calcularTotalCarrito()
+    totalCarrito.textContent = `Total: $${total}`
+
+    //Guardar el carrito en el localStorage
+    guardarCarrito(total)
+}
+
+//Funcion para calcular el total del carrito
+function calcularTotalCarrito() {
+    const carritoItems = document.getElementById("listaCarrito").getElementsByTagName("li")
+    let total = 0
+
+    for (let i = 0; i < carritoItems.length; i++) {
+        const precioTexto = carritoItems[i].textContent.split(" - ")[1].replace("$", "")
+        total += parseFloat(precioTexto)
+    }
+
+    return total
+}
+
+//Evento para vaciar el carrito
+document.getElementById("vaciarCarrito").addEventListener("click", function () {
+    //Vaciar la lista del carrito
+    document.getElementById("listaCarrito").innerHTML = ""
+
+    //Poner el total en 0
+    totalCarrito.textContent = "total: $0"
+
+    //Vaciar el carrito en el localStorage
+    localStorage.removeItem("carrito")
+
+    guardarCarrito(0)
+})
+
+//Funcion para guardar el carrito en el localStorage
+function guardarCarrito(total) {
+    const carritoItems = Array.from(document.getElementById("listaCarrito").getElementsByTagName("li"))
+    const carritoArray = carritoItems.map(item => item.textContent)
+
+    localStorage.setItem("carrito", JSON.stringify(carritoArray))
+    localStorage.setItem("total", JSON.stringify(total))
+
+    if (carritoArray.length === 0) {
+        localStorage.setItem("total", JSON.stringify(0))
+    } else {
+        localStorage.setItem("total", JSON.stringify(total))
+    }
+}
+
+//Cargar el carrito desde el localStorage al cargar la pagina
+document.addEventListener("DOMContentLoaded", function () {
+    const carritoGuardado = JSON.parse(localStorage.getItem("carrito") || [])
+    const totalGuardado = parseFloat(localStorage.getItem("total") || 0)
+
+    carritoGuardado.forEach(producto => {
+        const itemCarrito = document.createElement("li")
+        itemCarrito.textContent = producto
+        document.getElementById("listaCarrito").appendChild(itemCarrito)
+    })
+
+    totalCarrito.textContent = `Total: $${totalGuardado}`
+})
+
+//Bienvenida del usuario:
+const formulario = document.getElementById("formulario");
+const bienvenida = document.getElementById("bienvenida");
+
+document.getElementById("enviar").addEventListener("click", function () {
+    //tomo los valores del formulario
+    const nombre = document.getElementById("nombre").value
+    const apellido = document.getElementById("apellido").value
+
+    //almaceno los datos en el localstorage
+    localStorage.setItem("nombre", nombre)
+    localStorage.setItem("apellido", apellido)
+
+    //creo un parrafo para mostrar los datos
+    const parrafo = document.createElement("p")
+    parrafo.textContent = `Bienvenido ${nombre} ${apellido}`
+
+    //agrego el parrafo al div de bienvenida
+    bienvenida.appendChild(parrafo)
+
+    //reset del formulario
+    formulario.reset()
+})
+
+//Restaurar los datos del usuario desde el localstorage
+document.addEventListener("DOMContentLoaded", function () {
+    const nombreGuardado = localStorage.getItem("nombre")
+    const apellidoGuardado = localStorage.getItem("apellido")
+
+    if (nombreGuardado && apellidoGuardado) {
+        const parrafo = document.createElement("p")
+        parrafo.textContent = `Bienvenido ${nombreGuardado} ${apellidoGuardado}`
+        bienvenida.appendChild(parrafo)
+    }
+})
+
+
+
