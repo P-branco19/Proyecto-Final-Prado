@@ -133,41 +133,24 @@ document.addEventListener("DOMContentLoaded", function () {
     totalCarrito.textContent = `Total: $${totalGuardado}`
 })
 
-//Bienvenida del usuario:
-const formulario = document.getElementById("formulario");
-const bienvenida = document.getElementById("bienvenida");
+//Boton de realizar compra con sweetAlert2
+const realizarCompra = document.querySelector("#realizarCompra")
 
-document.getElementById("enviar").addEventListener("click", function () {
-    //tomo los valores del formulario
-    const nombre = document.getElementById("nombre").value
-    const apellido = document.getElementById("apellido").value
+realizarCompra.addEventListener("click", () => {
+    Swal.fire({
+        title: "Compra realizada",
+        icon: "success"
+    });
 
-    //almaceno los datos en el localstorage
-    localStorage.setItem("nombre", nombre)
-    localStorage.setItem("apellido", apellido)
+    //Vaciar la lista del carrito
+    document.getElementById("listaCarrito").innerHTML = ""
 
-    //creo un parrafo para mostrar los datos
-    const parrafo = document.createElement("p")
-    parrafo.textContent = `Bienvenido ${nombre} ${apellido}`
+    //Poner el total en 0
+    totalCarrito.textContent = "total: $0"
 
-    //agrego el parrafo al div de bienvenida
-    bienvenida.appendChild(parrafo)
+    //Vaciar el carrito en el localStorage
+    localStorage.removeItem("carrito")
+    localStorage.removeItem("total")
 
-    //reset del formulario
-    formulario.reset()
+    guardarCarrito(0)
 })
-
-//Restaurar los datos del usuario desde el localstorage
-document.addEventListener("DOMContentLoaded", function () {
-    const nombreGuardado = localStorage.getItem("nombre")
-    const apellidoGuardado = localStorage.getItem("apellido")
-
-    if (nombreGuardado && apellidoGuardado) {
-        const parrafo = document.createElement("p")
-        parrafo.textContent = `Bienvenido ${nombreGuardado} ${apellidoGuardado}`
-        bienvenida.appendChild(parrafo)
-    }
-})
-
-
-

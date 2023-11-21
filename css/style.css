@@ -11,6 +11,12 @@ body {
 
 h1 {
     color: #C2BBF0;
+    text-align: center;
+}
+
+h2 {
+    color: #D68EFA;
+
 }
 
 .input-group-text {
@@ -31,8 +37,8 @@ input {
 }
 
 #enviar:hover {
-    background-color: #4DABC7;
-    border-color: #3590F3;
+    background-color: #D68EFA;
+    border-color: #C2BBF0;
     color: #E9FAE3;
 }
 
@@ -67,4 +73,25 @@ input {
 
 .card {
     background-color: #C2BBF0;
+}
+
+#carrito {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#total {
+    color: #D68EFA;
+}
+
+li {
+    color: #D68EFA;
+    list-style: none;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
